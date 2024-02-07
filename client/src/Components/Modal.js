@@ -1,8 +1,25 @@
-const Modal = () => {
 
-    const mode = 'edit'
-    const handleChange = () => {
-        console.log('Changing')
+import { useState } from "react"
+
+const Modal = () => {
+    const mode = 'create';
+    const editMode = mode === 'edit' ? true : false;
+
+    const [data, setData] = useState({
+        user_email: "",
+        title: "",
+        progress: "",
+        date: editMode ? "" : new Date()
+    })
+
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+
+        setData(data => ({
+            ...data,
+            [name]: value
+        }))
+        console.log(data)
     }
 
     return (
@@ -19,7 +36,7 @@ const Modal = () => {
                         maxLength={30}
                         placeholder="Your task goes here"
                         name="title"
-                        value={""}
+                        value={data.value}
                         onChange={handleChange}
                     />
                     <br />
@@ -31,7 +48,7 @@ const Modal = () => {
                         min="0"
                         max="100"
                         name="progress"
-                        value={""}
+                        value={data.progress}
                         onChange={handleChange}
                     />
                     <input className={mode} type="submit" />
