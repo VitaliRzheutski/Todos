@@ -6,6 +6,23 @@ import Modal from './Modal';
 
 const ListItem = ({ task, getData }) => {
     const [showModal, setShowModal] = useState(false)
+
+    const deleteItem = async (e) => {
+        // e.prevetDefault()
+        try {
+            const response = await fetch(`http://localhost:8000/todos/${task.id}`, {
+                method: "DELETE"
+            })
+            if (response.status === 200) {
+                getData()
+            }
+        } catch (err) {
+            console.log(err)
+        }
+    }
+
+
+
     return (
         <li className="list-item">
             <div className="info-container">
@@ -16,7 +33,7 @@ const ListItem = ({ task, getData }) => {
 
             <div className='button-container'>
                 <button className='edit' onClick={() => setShowModal(true)} >EDIT</button>
-                <button className='delete'>DELETE</button>
+                <button className='delete' onClick={deleteItem}>DELETE</button>
             </div>
             {showModal && <Modal mode={'edit'} setShowModal={setShowModal} task={task} getData={getData} />}
         </li>
