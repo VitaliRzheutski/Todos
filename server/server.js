@@ -22,7 +22,6 @@ app.get('/todos/:userEmail', async (req, res) => {
 })
 
 //create a new to do
-
 app.post('/todos', async (req, res) => {
     const { user_email, title, progress, date } = req.body;
     const id = uuidv4();
@@ -30,6 +29,20 @@ app.post('/todos', async (req, res) => {
         const newToDo = await pool.query(`INSERT INTO todos(id, user_email,title,progress, date) VALUES($1, $2, $3, $4, $5)`,
             [id, user_email, title, progress, date])
         res.json(newToDo)
+    } catch (err) {
+        console.log(err)
+    }
+})
+
+//edit a todo
+app.put('/todos/:id', async (req, res) => {
+    const { id } = req.params;
+    const { user_email, title, progress, date } = req.body;
+
+    try {
+        const editToDo = await pool.query('UPDATE todos SET user_email = $1, title = $2, progress = $3, date = $4 WHERE id = $5',
+            [user_email, title, progress, date, id]);
+        res.json(editToDo)
     } catch (err) {
         console.log(err)
     }
