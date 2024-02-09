@@ -19,7 +19,9 @@ const App = () => {
     }
   }
   useEffect(() => {
-    getData()
+    if (authToken) {
+      getData()
+    }
   }, [])
 
   //SORT by date
